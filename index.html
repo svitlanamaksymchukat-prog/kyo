@@ -1,0 +1,771 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Kyokushin Karate Technique Trainer</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+    :root {
+      --dojo-red: #C0392B;
+      --dojo-red-dark: #922B21;
+      --bg-primary: #111;
+      --bg-secondary: #181818;
+      --border-tertiary: rgba(255,255,255,0.12);
+      --border-secondary: rgba(255,255,255,0.18);
+      --text-primary: #f2f2f2;
+      --text-secondary: #b7b7b7;
+      --radius-md: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .dojo-wrap {
+      background: var(--bg-primary);
+      padding: clamp(1rem, 4vw, 2rem);
+      max-width: 720px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    .technique-display {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-tertiary);
+      border-left: 4px solid var(--dojo-red);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1rem;
+      margin-bottom: 1rem;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .technique-category {
+      font-size: 13px;
+      color: var(--dojo-red);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .technique-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(22px, 5vw, 34px);
+      letter-spacing: 1.5px;
+      color: var(--text-primary);
+      line-height: 1.05;
+      margin-bottom: 4px;
+      word-break: break-word;
+    }
+
+    .technique-romaji {
+      font-size: clamp(14px, 3.5vw, 16px);
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .technique-idle {
+      font-size: clamp(16px, 4vw, 18px);
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
+    .rep-badge {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      letter-spacing: 1px;
+    }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 1.25rem;
+    }
+
+    .control-block {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-tertiary);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1rem;
+    }
+
+    .control-label {
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .control-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(22px, 5vw, 30px);
+      color: var(--dojo-red);
+      margin-bottom: 6px;
+    }
+
+    .filter-section {
+      margin-bottom: 1.25rem;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: nowrap;
+    }
+
+    #kyuRow {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .cb-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      user-select: none;
+      min-height: 32px;
+    }
+
+    .cb-box {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      border: 1.5px solid var(--border-secondary);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+
+    .cb-box.checked {
+      background: var(--dojo-red);
+      border-color: var(--dojo-red);
+    }
+
+    .cb-box.checked::after {
+      content: '';
+      display: block;
+      width: 5px;
+      height: 9px;
+      border: 2px solid #fff;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+
+    .cb-text {
+      font-size: clamp(14px, 3.5vw, 16px);
+      color: var(--text-primary);
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .start-btn {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(20px, 5vw, 24px);
+      letter-spacing: 2px;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      border: none;
+      background: var(--dojo-red);
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      min-height: 48px;
+      min-width: 140px;
+    }
+
+    .start-btn:hover {
+      background: var(--dojo-red-dark);
+    }
+
+    .start-btn:active {
+      transform: scale(0.97);
+    }
+
+    .start-btn.running {
+      background: #555;
+    }
+
+    .counter-block {
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .counter-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(28px, 7vw, 38px);
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .counter-lbl {
+      font-size: 12px;
+      color: var(--text-secondary);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .progress-bar-wrap {
+      height: 4px;
+      background: var(--border-tertiary);
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--dojo-red);
+      width: 0%;
+    }
+
+    .warn {
+      font-size: 13px;
+      color: #ffb3b3;
+      margin-top: 8px;
+      display: none;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      touch-action: pan-y;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 640px) {
+      .dojo-wrap {
+        padding: 0.9rem;
+      }
+
+      .technique-display {
+        min-height: 140px;
+        padding: 1rem 0.9rem;
+      }
+
+      .controls-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .counter-block {
+        margin-left: 0;
+        text-align: left;
+      }
+
+      .checkbox-row {
+        gap: 10px;
+      }
+
+      #kyuRow {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .cb-item {
+        width: 100%;
+      }
+
+      .cb-text {
+        font-size: 13px;
+      }
+
+      .start-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dojo-wrap">
+    <h2 class="sr-only">Kyokushin Karate Technique Trainer</h2>
+
+    <div class="technique-display">
+      <div class="technique-idle" id="idleMsg">Press OSS to begin training</div>
+      <div id="techContent" style="display:none">
+        <div class="technique-category" id="techCat"></div>
+        <div class="technique-name" id="techName"></div>
+        <div class="technique-romaji" id="techRomaji"></div>
+        <div class="rep-badge" id="repBadge"></div>
+      </div>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-label">Technique groups</div>
+      <div class="checkbox-row" id="groupRow">
+        <label class="cb-item"><div class="cb-box checked" data-group="strikes"></div><span class="cb-text">Tsuki &amp; Uchi</span></label>
+        <label class="cb-item"><div class="cb-box checked" data-group="keri"></div><span class="cb-text">Keri</span></label>
+        <label class="cb-item"><div class="cb-box checked" data-group="uke"></div><span class="cb-text">Uke</span></label>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-label">Kyu / Dan Levels</div>
+      <div class="checkbox-row" id="kyuRow"></div>
+      <div class="warn" id="warnMsg">⚠ Select at least one group and one level</div>
+    </div>
+
+    <div class="controls-grid">
+      <div class="control-block">
+        <div class="control-label">Interval</div>
+        <div class="control-val" id="intervalVal">5s</div>
+        <input type="range" id="intervalSlider" min="2" max="15" step="1" value="5">
+      </div>
+      <div class="control-block">
+        <div class="control-label">Speech rate</div>
+        <div class="control-val" id="rateVal">0.9×</div>
+        <input type="range" id="rateSlider" min="0.5" max="2" step="0.1" value="0.9">
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="start-btn" id="startBtn">OSS — START</button>
+      <div class="counter-block">
+        <div class="counter-val" id="counterVal">0</div>
+        <div class="counter-lbl">Techniques</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+const techniques = [
+  // 10kyu
+  { name: "Seiken Kagi Tsuki", group: "strikes", kyu: "10kyu" },
+  { name: "Seiken Oi Tsuki Jodan", group: "strikes", kyu: "10kyu", speak: "Seiken Oi Tsuki Yodan" },
+  { name: "Seiken Oi Tsuki Chudan", group: "strikes", kyu: "10kyu" },
+  { name: "Seiken Oi Tsuki Gedan", group: "strikes", kyu: "10kyu", speak: "Seiken Oi Tsuki Guedán" },
+  { name: "Seiken Morote Tsuki Jodan", group: "strikes", kyu: "10kyu", speak: "Seiken Morote Tsuki Yodan" },
+  { name: "Seiken Morote Tsuki Chudan", group: "strikes", kyu: "10kyu" },
+  { name: "Seiken Morote Tsuki Gedan", group: "strikes", kyu: "10kyu", speak: "Seiken Morote Tsuki Guedán" },
+  { name: "Seiken Jodan Uke", group: "uke", kyu: "10kyu", speak: "Seiken Yodan Ukeh" },
+  { name: "Shuto Jodan Uke", group: "uke", kyu: "10kyu", speak: "Shuto Yodan Ukeh" },
+  { name: "Seiken Mae Gedan Gedan Barai", group: "uke", kyu: "10kyu", speak: "Seiken Mae Guedán Barai" },
+  { name: "Shuto Mae Gedan Gedan Barai", group: "uke", kyu: "10kyu", speak: "Shuto Mae Guedán Barai" },
+  { name: "Hiza Geri", group: "keri", kyu: "10kyu" },
+  { name: "Kin Geri", group: "keri", kyu: "10kyu" },
+
+  // 9kyu
+  { name: "Seiken Ago Uchi", group: "strikes", kyu: "9kyu" },
+  { name: "Seiken Giaku Tsuki Jodan", group: "strikes", kyu: "9kyu", speak: "Seiken Guiaku Tsuki Yodan" },
+  { name: "Seiken Giaku Tsuki Chudan", group: "strikes", kyu: "9kyu", speak: "Seiken Guiaku Tsuki Chudan" },
+  { name: "Seiken Giaku Tsuki Gedan", group: "strikes", kyu: "9kyu", speak: "Seiken Guiaku Tsuki Guedán" },
+  { name: "Seiken Chudan Soto Uke", group: "uke", kyu: "9kyu", speak: "Seiken Chudan Soto Ukeh" },
+  { name: "Shuto Chudan Soto Uke", group: "uke", kyu: "9kyu", speak: "Shuto Chudan Soto Ukeh" },
+  { name: "Seiken Chudan Uchi Uke", group: "uke", kyu: "9kyu", speak: "Seiken Chudan Uchi Ukeh" },
+  { name: "Shuto Chudan Uchi Uke", group: "uke", kyu: "9kyu", speak: "Shuto Chudan Uchi Ukeh" },
+  { name: "Mae Geri Chudan (Chusoku)", group: "keri", kyu: "9kyu" },
+
+  // 8kyu
+  { name: "Shita Tsuki", group: "strikes", kyu: "8kyu" },
+  { name: "Jun Tsuki Jodan", group: "strikes", kyu: "8kyu", speak: "Yun Tsuki Yodan" },
+  { name: "Jun Tsuki Chudan", group: "strikes", kyu: "8kyu", speak: "Yun Tsuki Chudan" },
+  { name: "Jun Tsuki Gedan", group: "strikes", kyu: "8kyu", speak: "Yun Tsuki Guedán" },
+  { name: "Tate Tsuki Jodan", group: "strikes", kyu: "8kyu", speak: "Tate Tsuki Yodan" },
+  { name: "Tate Tsuki Chudan", group: "strikes", kyu: "8kyu" },
+  { name: "Tate Tsuki Gedan", group: "strikes", kyu: "8kyu", speak: "Tate Tsuki Guedán" },
+  { name: "Morote Chudan Uchi Uke", group: "uke", kyu: "8kyu", speak: "Morote Chudan Uchi Ukeh" },
+  { name: "Seiken Chudan Uchi Uke Gedan Barai", group: "uke", kyu: "8kyu", speak: "Seiken Chudan Uchi Ukeh Guedán Barai" },
+  { name: "Shuto Chudan Uchi Uke Gedan Barai", group: "uke", kyu: "8kyu", speak: "Shuto Chudan Uchi Ukeh Guedán Barai" },
+  { name: "Mae Geri Jodan (Chusoku)", group: "keri", kyu: "8kyu", speak: "Mae Geri Yodan Chusoku" },
+
+  // 7kyu
+  { name: "Tettsui Komi Kame", group: "strikes", kyu: "7kyu" },
+  { name: "Tettsui Oroshi Ganmen Uchi", group: "strikes", kyu: "7kyu" },
+  { name: "Tettsui Yoko Mae", group: "strikes", kyu: "7kyu", speak: "Tettsui Yóko Mae" },
+  { name: "Tettsui Hizo Uchi", group: "strikes", kyu: "7kyu" },
+  { name: "Tettsui Yoko Uchi Jodan", group: "strikes", kyu: "7kyu", speak: "Tettsui Yóko Uchi Yodan" },
+  { name: "Tettsui Yoko Uchi Chudan", group: "strikes", kyu: "7kyu", speak: "Tettsui Yóko Uchi Chudan" },
+  { name: "Tettsui Yoko Uchi Gedan", group: "strikes", kyu: "7kyu", speak: "Tettsui Yóko Uchi Guedán" },
+  { name: "Seiken Mavashi Gedan Barai", group: "uke", kyu: "7kyu", speak: "Seiken Mavashi Ukeh Guedán Barai" },
+  { name: "Seiken Mavashi Uke", group: "uke", kyu: "7kyu", speak: "Seiken Mavashi Ukeh" },
+  { name: "Shuto Mavashi Gedan Barai", group: "uke", kyu: "7kyu", speak: "Shuto Mavashi Ukeh Guedán Barai" },
+  { name: "Shuto Mavashi Uke", group: "uke", kyu: "7kyu", speak: "Shuto Mavashi Ukeh" },
+  { name: "Mae Ke Age (Chusoku)", group: "keri", kyu: "7kyu", speak: "Mae Ke Ague Chusoku" },
+  { name: "Mawashi Soto Ke Age (Teisoku)", group: "keri", kyu: "7kyu", speak: "Mawashi Soto Ke Ague Teisoku" },
+  { name: "Mawashi Uchi Ke Age (Haisoku)", group: "keri", kyu: "7kyu", speak: "Mawashi Uchi Ke Ague Haisoku" },
+  { name: "Yoko Ke Age (Sokuto)", group: "keri", kyu: "7kyu", speak: "Yóko Ke Ague Sokuto" },
+
+  // 6kyu
+  { name: "Uraken Sommen Ganmen Uchi", group: "strikes", kyu: "6kyu" },
+  { name: "Uraken Sayu Uchi", group: "strikes", kyu: "6kyu" },
+  { name: "Uraken Hizo Uchi", group: "strikes", kyu: "6kyu" },
+  { name: "Uraken Ganmen Oroshi Uchi", group: "strikes", kyu: "6kyu" },
+  { name: "Uraken Mawashi Uchi", group: "strikes", kyu: "6kyu" },
+  { name: "Nihon Nukite", group: "strikes", kyu: "6kyu", speak: "Nihón Nukite Yodan" },
+  { name: "Yohon Nukite Jodan", group: "strikes", kyu: "6kyu", speak: "Yohon Nukite Yodan" },
+  { name: "Yohon Nukite Chudan", group: "strikes", kyu: "6kyu" },
+  { name: "Seiken Juji Uke Jodan", group: "uke", kyu: "6kyu", speak: "Seiken yuhyi  Ukeh Yodan" },
+  { name: "Seiken Juji Uke Gedan", group: "uke", kyu: "6kyu", speak: "Seiken yuhyi  Ukeh Guedán" },
+  { name: "Shuto Juji Uke Jodan", group: "uke", kyu: "6kyu", speak: "Shuto yuhyi  Ukeh Yodan" },
+  { name: "Shuto Juji Uke Gedan", group: "uke", kyu: "6kyu", speak: "Shuto yuhyi  Ukeh Guedán" },
+  { name: "Kantsetsu Geri", group: "keri", kyu: "6kyu" },
+  { name: "Yoko Geri Chudan (Sokuto)", group: "keri", kyu: "6kyu", speak: "Yóko Geri Chudan Sokuto" },
+  { name: "Mawashi Geri Gedan (Haisoku)", group: "keri", kyu: "6kyu", speak: "Mawashi Geri Guedán Haisoku" },
+  { name: "Mawashi Geri Gedan (Chusoku)", group: "keri", kyu: "6kyu", speak: "Mawashi Geri Guedán Chusoku" },
+
+  // 5kyu
+  { name: "Shotei Uchi Jodan", group: "strikes", kyu: "5kyu", speak: "Shotei Uchi Yodan" },
+  { name: "Shotei Uchi Chudan", group: "strikes", kyu: "5kyu" },
+  { name: "Shotei Uchi Gedan", group: "strikes", kyu: "5kyu", speak: "Shotei Uchi Guedán" },
+  { name: "Koken Uchi Jodan", group: "strikes", kyu: "5kyu", speak: "Koken Uchi Yodan" },
+  { name: "Koken Uchi Chudan", group: "strikes", kyu: "5kyu" },
+  { name: "Koken Uchi Gedan", group: "strikes", kyu: "5kyu", speak: "Koken Uchi Guedán" },
+  { name: "Shotei Uke Jodan", group: "uke", kyu: "5kyu", speak: "Shotei Ukeh Yodan" },
+  { name: "Shotei Uke Chudan", group: "uke", kyu: "5kyu", speak: "Shotei Ukeh Chudan" },
+  { name: "Shotei Uke Gedan", group: "uke", kyu: "5kyu", speak: "Shotei Ukeh Guedán" },
+  { name: "Mawashi Geri Chudan (Haisoku)", group: "keri", kyu: "5kyu" },
+  { name: "Mawashi Geri Chudan (Chusoku)", group: "keri", kyu: "5kyu" },
+  { name: "Ushiro Geri Chudan (Kakato)", group: "keri", kyu: "5kyu" },
+  { name: "Mawashi Kubi Geri", group: "keri", kyu: "5kyu" },
+
+  // 4kyu
+  { name: "Shuto Sakotsu Uchi", group: "strikes", kyu: "4kyu" },
+  { name: "Shuto Yoko Ganmen Uchi", group: "strikes", kyu: "4kyu", speak: "Shuto Yóko Ganmen Uchi Yodan" },
+  { name: "Shuto Uchi Komi", group: "strikes", kyu: "4kyu" },
+  { name: "Shuto Hizo Uchi", group: "strikes", kyu: "4kyu" },
+  { name: "Shuto Jodan Uchi Uchi", group: "strikes", kyu: "4kyu", speak: "Shuto Yodan Uchi Uchi" },
+  { name: "Mae Shuto Mawashi Uke", group: "uke", kyu: "4kyu", speak: "Mae Shuto Mawashi Ukeh" },
+  { name: "Shuto Jodan Uchi Uke", group: "uke", kyu: "4kyu", speak: "Shuto Yodan Uchi Ukeh" },
+  { name: "Yoko Geri Jodan", group: "keri", kyu: "4kyu", speak: "Yóko Geri Yodan" },
+  { name: "Ushiro Geri Jodan", group: "keri", kyu: "4kyu", speak: "Ushiro Geri Yodan" },
+  { name: "Mawashi Geri Jodan (Chusoku)", group: "keri", kyu: "4kyu", speak: "Mawashi Geri Yodan Chusoku" },
+  { name: "Mawashi Geri Jodan (Haisoku)", group: "keri", kyu: "4kyu", speak: "Mawashi Geri Yodan Haisoku" },
+
+  // 3kyu
+  { name: "Hiji Ate Jodan", group: "strikes", kyu: "3kyu", speak: "íyi Ate Yodan" },
+  { name: "Hiji Ate Chudan", group: "strikes", kyu: "3kyu", speak: "íyi Ate Chudan" },
+  { name: "Mae Hiji Ate Jodan", group: "strikes", kyu: "3kyu", speak: "Mae íyi Ate Yodan" },
+  { name: "Mae Hiji Ate Chudan", group: "strikes", kyu: "3kyu", speak: "Mae íyi Ate Chudan" },
+  { name: "Age Hiji Ate Jodan", group: "strikes", kyu: "3kyu", speak: "Ah-geh íyi Ate Yodan" },
+  { name: "Age Hiji Ate Chudan", group: "strikes", kyu: "3kyu", speak: "Ah-geh íyi Ate Chudan" },
+  { name: "Ushiro Hiji Ate", group: "strikes", kyu: "3kyu", speak: "Ushiro iyi Ate" },
+  { name: "Oroshi Hiji Ate", group: "strikes", kyu: "3kyu", speak: "Oroshi iyi Ate" },
+  { name: "Shotei Morote Uke Gedan", group: "uke", kyu: "3kyu", speak: "Shotei Morote Ukeh Guedán" },
+  { name: "Ago Geri Jodan", group: "keri", kyu: "3kyu", speak: "Ago Geri Yodan" },
+  { name: "Mae Kakato Geri Jodan", group: "keri", kyu: "3kyu", speak: "Mae Kakato Geri Yodan" },
+  { name: "Mae Kakato Geri Chudan", group: "keri", kyu: "3kyu", speak: "Mae Kakato Geri Chudan" },
+  { name: "Mae Kakato Geri Gedan", group: "keri", kyu: "3kyu", speak: "Mae Kakato Geri Guedán" },
+
+  // 2kyu
+  { name: "Hira Ken Tsuki Jodan", group: "strikes", kyu: "2kyu", speak: "Hira Ken Tsuki Yodan" },
+  { name: "Hira Ken Tsuki Chudan", group: "strikes", kyu: "2kyu" },
+  { name: "Hira Ken Oroshi Uchi", group: "strikes", kyu: "2kyu" },
+  { name: "Hira Ken Mawashi Uchi", group: "strikes", kyu: "2kyu" },
+  { name: "Age Jodan Tsuki", group: "strikes", kyu: "2kyu", speak: "Ah-geh Yodan Tsuki" },
+  { name: "Haishu Jodan", group: "strikes", kyu: "2kyu", speak: "Haishu Yodan" },
+  { name: "Haishu Chudan", group: "strikes", kyu: "2kyu" },
+  { name: "Koken Uke Jodan", group: "uke", kyu: "2kyu", speak: "Koken Ukeh Yodan" },
+  { name: "Koken Uke Chudan", group: "uke", kyu: "2kyu", speak: "Koken Ukeh Chudan" },
+  { name: "Koken Uke Gedan", group: "uke", kyu: "2kyu", speak: "Koken Ukeh Guedán" },
+  { name: "Tobi Mae Geri", group: "keri", kyu: "2kyu" },
+  { name: "Tobi Nidan Geri", group: "keri", kyu: "2kyu" },
+
+  // 1kyu
+  { name: "Riuto Ken Tsuki Jodan", group: "strikes", kyu: "1kyu", speak: "Riuto Ken Tsuki Yodan" },
+  { name: "Riuto Ken Tsuki Chudan", group: "strikes", kyu: "1kyu" },
+  { name: "Naka Yubi Ippon Ken Jodan", group: "strikes", kyu: "1kyu", speak: "Naka Yubi Ippon Ken Yodan" },
+  { name: "Naka Yubi Ippon Ken Chudan", group: "strikes", kyu: "1kyu" },
+  { name: "Oya Yubi Ken Jodan", group: "strikes", kyu: "1kyu", speak: "Oya Yubi Ken Yodan" },
+  { name: "Oya Yubi Ken Chudan", group: "strikes", kyu: "1kyu" },
+  { name: "Hitosashi Yubi Ippon Ken Jodan", group: "strikes", kyu: "1kyu", speak: "Hitosashi Yubi Ippon Ken Yodan" },
+  { name: "Hitosashi Yubi Ippon Ken Chudan", group: "strikes", kyu: "1kyu" },
+  { name: "Kake Uke Jodan", group: "uke", kyu: "1kyu", speak: "Káke Úke Yodan" },
+  { name: "Kake Uke Chudan", group: "uke", kyu: "1kyu", speak: "Káke Úke  Chudan" },
+  { name: "Haito Uchi Uke Chudan", group: "uke", kyu: "1kyu", speak: "Haito Uchi Ukeh Chudan" },
+  { name: "Uchi Haisoku Geri Jodan", group: "keri", kyu: "1kyu", speak: "Uchi Haisoku Geri Yodan" },
+  { name: "Oroshi Uchi Kakato Geri", group: "keri", kyu: "1kyu" },
+  { name: "Oroshi Soto Kakato Geri", group: "keri", kyu: "1kyu" },
+  { name: "Tobi Yoko Geri", group: "keri", kyu: "1kyu", speak: "Tobi Yóko Geri" },
+
+  // 1dan
+  { name: "Yama Tsuki", group: "strikes", kyu: "1dan" },
+  { name: "Morote Haito Uchi Jodan", group: "strikes", kyu: "1dan", speak: "Morote Haito Uchi Yodan" },
+  { name: "Morote Haito Uchi Chudan", group: "strikes", kyu: "1dan" },
+  { name: "Haito Uchi Jodan", group: "strikes", kyu: "1dan", speak: "Haito Uchi Yodan" },
+  { name: "Haito Uchi Chudan", group: "strikes", kyu: "1dan" },
+  { name: "Haito Uchi Gedan", group: "strikes", kyu: "1dan", speak: "Haito Uchi Guedán" },
+  { name: "Osae Uke", group: "uke", kyu: "1dan", speak: "Osae Ukeh" },
+  { name: "Morote Kake Uke Jodan", group: "uke", kyu: "1dan", speak: "Morote Káke Úke Yodan" },
+  { name: "Kake Geri Chusoku Jodan", group: "keri", kyu: "1dan", speak: "Káke Geri Chusoku Yodan" },
+  { name: "Kake Geri Chusoku Chudan", group: "keri", kyu: "1dan", speak: "Káke Geri Chusoku Chudan" },
+  { name: "Kake Geri Kakato Jodan", group: "keri", kyu: "1dan", speak: "Káke Geri Kakato Yodan" },
+  { name: "Kake Geri Kakato Chudan", group: "keri", kyu: "1dan", speak: "Káke Geri Kakato Chudan" },
+  { name: "Ushiro Mawashi Geri Jodan", group: "keri", kyu: "1dan", speak: "Ushiro Mawashi Geri Yodan" },
+  { name: "Ushiro Mawashi Geri Chudan", group: "keri", kyu: "1dan", speak: "Ushiro Mawashi Geri Chudan" },
+  { name: "Ushiro Mawashi Geri Gedan", group: "keri", kyu: "1dan", speak: "Ushiro Mawashi Geri Guedán" },
+];
+    const activeGroups = new Set(["strikes", "keri", "uke"]);
+    const activeKyus = new Set(["10kyu","9kyu","8kyu","7kyu","6kyu","5kyu","4kyu","3kyu","2kyu","1kyu","1dan"]);
+
+    const STORAGE_KEY = 'kyokushin_config';
+    let _savedConfig = null;
+    try { _savedConfig = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); } catch(e) {}
+    if (_savedConfig) {
+      if (Array.isArray(_savedConfig.groups)) { activeGroups.clear(); _savedConfig.groups.forEach(g => activeGroups.add(g)); }
+      if (Array.isArray(_savedConfig.kyus)) { activeKyus.clear(); _savedConfig.kyus.forEach(k => activeKyus.add(k)); }
+    }
+
+    function saveConfig() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          groups: [...activeGroups],
+          kyus: [...activeKyus],
+          interval: intervalSlider.value,
+          rate: rateSlider.value,
+        }));
+      } catch(e) {}
+    }
+
+    let running = false;
+    let count = 0;
+    let lastIdx = -1;
+    let timeoutId = null;
+    let progressAnimFrame = null;
+
+    const idleMsg = document.getElementById('idleMsg');
+    const techContent = document.getElementById('techContent');
+    const techCat = document.getElementById('techCat');
+    const techName = document.getElementById('techName');
+    const techRomaji = document.getElementById('techRomaji');
+    const repBadge = document.getElementById('repBadge');
+    const startBtn = document.getElementById('startBtn');
+    const counterVal = document.getElementById('counterVal');
+    const intervalSlider = document.getElementById('intervalSlider');
+    const intervalVal = document.getElementById('intervalVal');
+    const rateSlider = document.getElementById('rateSlider');
+    const rateVal = document.getElementById('rateVal');
+    const progressBar = document.getElementById('progressBar');
+    const warnMsg = document.getElementById('warnMsg');
+
+    const kyuLabels = {
+      "10kyu":"10 Kyu","9kyu":"9 Kyu","8kyu":"8 Kyu","7kyu":"7 Kyu","6kyu":"6 Kyu",
+      "5kyu":"5 Kyu","4kyu":"4 Kyu","3kyu":"3 Kyu","2kyu":"2 Kyu","1kyu":"1 Kyu","1dan":"1 Dan"
+    };
+
+    const kyuRow = document.getElementById('kyuRow');
+    Object.keys(kyuLabels).forEach(kyu => {
+      const label = document.createElement('label');
+      label.className = 'cb-item';
+      const isChecked = activeKyus.has(kyu);
+      label.innerHTML = `<div class="cb-box${isChecked ? ' checked' : ''}" data-kyu="${kyu}"></div><span class="cb-text">${kyuLabels[kyu]}</span>`;
+      kyuRow.appendChild(label);
+    });
+
+    function toggleFilter(set, box, type) {
+      const value = box.dataset[type];
+      if (set.has(value)) {
+        if (set.size === 1) {
+          warnMsg.style.display = 'block';
+          return;
+        }
+        set.delete(value);
+        box.classList.remove('checked');
+      } else {
+        set.add(value);
+        box.classList.add('checked');
+      }
+      warnMsg.style.display = 'none';
+      lastIdx = -1;
+      if (running) restartCycle();
+      saveConfig();
+    }
+
+    document.getElementById('groupRow').addEventListener('click', e => {
+      const box = e.target.closest('[data-group]');
+      if (box) toggleFilter(activeGroups, box, 'group');
+    });
+
+    kyuRow.addEventListener('click', e => {
+      const box = e.target.closest('[data-kyu]');
+      if (box) toggleFilter(activeKyus, box, 'kyu');
+    });
+
+    intervalSlider.addEventListener('input', () => {
+      intervalVal.textContent = intervalSlider.value + 's';
+      if (running) restartCycle();
+      saveConfig();
+    });
+
+    rateSlider.addEventListener('input', () => {
+      rateVal.textContent = parseFloat(rateSlider.value).toFixed(1) + '×';
+      saveConfig();
+    });
+
+    function speak(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'es-ES';
+      utterance.rate = parseFloat(rateSlider.value);
+      utterance.pitch = 1;
+
+      const voices = window.speechSynthesis.getVoices();
+      const spanishVoice = voices.find(v => v.lang && v.lang.startsWith('es'));
+      if (spanishVoice) utterance.voice = spanishVoice;
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function getPool() {
+      return techniques.filter(t => activeGroups.has(t.group) && activeKyus.has(t.kyu));
+    }
+
+    function groupLabel(g) {
+      return g === 'strikes' ? 'Tsuki / Uchi' : g === 'keri' ? 'Keri' : 'Uke';
+    }
+
+    function animateProgress(duration) {
+      if (progressAnimFrame) cancelAnimationFrame(progressAnimFrame);
+      const start = performance.now();
+      progressBar.style.width = '0%';
+
+      function step(now) {
+        if (!running) return;
+        const pct = Math.min(((now - start) / duration) * 100, 100);
+        progressBar.style.width = pct + '%';
+        if (pct < 100) progressAnimFrame = requestAnimationFrame(step);
+      }
+
+      progressAnimFrame = requestAnimationFrame(step);
+    }
+
+    function scheduleNext() {
+      const delay = parseInt(intervalSlider.value, 10) * 1000;
+      animateProgress(delay);
+      timeoutId = setTimeout(() => {
+        if (!running) return;
+        pickAndShow();
+        scheduleNext();
+      }, delay);
+    }
+
+    function restartCycle() {
+      clearTimeout(timeoutId);
+      if (progressAnimFrame) cancelAnimationFrame(progressAnimFrame);
+      progressBar.style.width = '0%';
+      pickAndShow();
+      scheduleNext();
+    }
+
+    function pickAndShow() {
+      const pool = getPool();
+      if (!pool.length) {
+        idleMsg.textContent = "No techniques match your selection";
+        idleMsg.style.display = 'block';
+        techContent.style.display = 'none';
+        return;
+      }
+
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * pool.length);
+      } while (idx === lastIdx && pool.length > 1);
+
+      lastIdx = idx;
+      const t = pool[idx];
+      count++;
+      counterVal.textContent = count;
+
+      idleMsg.style.display = 'none';
+      techContent.style.display = 'block';
+      techCat.textContent = groupLabel(t.group);
+      techName.textContent = t.name;
+      techRomaji.textContent = t.romaji || '';
+      repBadge.textContent = '#' + count;
+
+      speak(t.speak || t.name);
+    }
+
+    startBtn.addEventListener('click', () => {
+      if (!running) {
+        running = true;
+        startBtn.textContent = 'OSS — STOP';
+        startBtn.classList.add('running');
+        pickAndShow();
+        scheduleNext();
+      } else {
+        running = false;
+        clearTimeout(timeoutId);
+        if (progressAnimFrame) cancelAnimationFrame(progressAnimFrame);
+        progressBar.style.width = '0%';
+        window.speechSynthesis?.cancel();
+        startBtn.textContent = 'OSS — START';
+        startBtn.classList.remove('running');
+      }
+    });
+
+    window.speechSynthesis?.getVoices();
+    if (_savedConfig) {
+      if (_savedConfig.interval) { intervalSlider.value = _savedConfig.interval; intervalVal.textContent = _savedConfig.interval + 's'; }
+      if (_savedConfig.rate) { rateSlider.value = _savedConfig.rate; }
+    }
+    document.querySelectorAll('[data-group]').forEach(box => {
+      box.classList.toggle('checked', activeGroups.has(box.dataset.group));
+    });
+    rateVal.textContent = parseFloat(rateSlider.value).toFixed(1) + '×';
+    intervalVal.textContent = intervalSlider.value + 's';
+  </script>
+</body>
+</html>
