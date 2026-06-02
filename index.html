@@ -1,6 +1,5 @@
-
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -20,377 +19,173 @@
       --radius-md: 14px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg-primary); color: var(--text-primary); font-family: 'IBM Plex Mono', monospace; }
 
-    html {
-      -webkit-text-size-adjust: 100%;
-      text-size-adjust: 100%;
-    }
+    .dojo-wrap { padding: clamp(1rem, 4vw, 2rem); max-width: 720px; margin: 0 auto; min-height: 100vh; }
 
-    body {
-      margin: 0;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      font-family: 'IBM Plex Mono', monospace;
-    }
-
-    .dojo-wrap {
-      background: var(--bg-primary);
-      padding: clamp(1rem, 4vw, 2rem);
-      max-width: 720px;
-      margin: 0 auto;
-      min-height: 100vh;
-    }
-
-    .technique-display {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-tertiary);
-      border-left: 4px solid var(--dojo-red);
-      border-radius: var(--radius-md);
-      padding: 1.25rem 1rem;
-      margin-bottom: 1rem;
-      min-height: 120px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      position: relative;
-    }
-
-    .technique-category {
-      font-size: 13px;
-      color: var(--dojo-red);
+    .mode-tabs { display: flex; gap: 8px; margin-bottom: 1.25rem; }
+    .mode-tab {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(16px, 4vw, 20px);
       letter-spacing: 2px;
-      text-transform: uppercase;
-      font-weight: 500;
-      margin-bottom: 8px;
-    }
-
-    .technique-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(22px, 5vw, 34px);
-      letter-spacing: 1.5px;
-      color: var(--text-primary);
-      line-height: 1.05;
-      margin-bottom: 4px;
-      word-break: break-word;
-    }
-
-    .technique-romaji {
-      font-size: clamp(14px, 3.5vw, 16px);
-      color: var(--text-secondary);
-      font-style: italic;
-    }
-
-    .technique-idle {
-      font-size: clamp(16px, 4vw, 18px);
-      color: var(--text-secondary);
-      text-align: center;
-    }
-
-    .rep-badge {
-      position: absolute;
-      top: 12px;
-      right: 14px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      letter-spacing: 1px;
-    }
-
-    .controls-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 1.25rem;
-    }
-
-    .control-block {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-tertiary);
+      padding: 10px 20px;
       border-radius: var(--radius-md);
-      padding: 0.85rem 1rem;
-    }
-
-    .control-label {
-      font-size: 12px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      margin-bottom: 8px;
-    }
-
-    .control-val {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(22px, 5vw, 30px);
-      color: var(--dojo-red);
-      margin-bottom: 6px;
-    }
-
-    .filter-section {
-      margin-bottom: 1.25rem;
-    }
-
-    .filter-label {
-      font-size: 12px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      margin-bottom: 10px;
-    }
-
-    .checkbox-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: nowrap;
-    }
-
-    #kyuRow {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-
-    .cb-item {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      cursor: pointer;
-      user-select: none;
-      min-height: 32px;
-    }
-
-    .cb-box {
-      width: 18px;
-      height: 18px;
-      border-radius: 4px;
       border: 1.5px solid var(--border-secondary);
       background: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.15s;
-      flex-shrink: 0;
-    }
-
-    .cb-box.checked {
-      background: var(--dojo-red);
-      border-color: var(--dojo-red);
-    }
-
-    .cb-box.checked::after {
-      content: '';
-      display: block;
-      width: 5px;
-      height: 9px;
-      border: 2px solid #fff;
-      border-top: none;
-      border-left: none;
-      transform: rotate(45deg) translate(-1px, -1px);
-    }
-
-    .cb-text {
-      font-size: clamp(14px, 3.5vw, 16px);
-      color: var(--text-primary);
-      letter-spacing: 0.5px;
-      line-height: 1.2;
-    }
-
-    .btn-row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .start-btn {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(20px, 5vw, 24px);
-      letter-spacing: 2px;
-      padding: 12px 24px;
-      border-radius: var(--radius-md);
-      border: none;
-      background: var(--dojo-red);
-      color: #fff;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
-      min-height: 48px;
-      min-width: 140px;
-    }
-
-    .start-btn:hover {
-      background: var(--dojo-red-dark);
-    }
-
-    .start-btn:active {
-      transform: scale(0.97);
-    }
-
-    .start-btn.running {
-      background: #555;
-    }
-
-    .counter-block {
-      margin-left: auto;
-      text-align: right;
-    }
-
-    .counter-val {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(28px, 7vw, 38px);
-      color: var(--text-primary);
-      line-height: 1;
-    }
-
-    .counter-lbl {
-      font-size: 12px;
       color: var(--text-secondary);
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.15s;
+      flex: 1;
     }
+    .mode-tab.active { background: var(--dojo-red); border-color: var(--dojo-red); color: #fff; }
 
-    .progress-bar-wrap {
-      height: 4px;
-      background: var(--border-tertiary);
-      border-radius: 999px;
+    .card, .panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-tertiary);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1rem;
       margin-bottom: 1.25rem;
-      overflow: hidden;
+    }
+    .technique-display, .renraku-display { border-left: 4px solid var(--dojo-red); }
+
+    .technique-idle, .renraku-idle { font-size: clamp(16px, 4vw, 18px); color: var(--text-secondary); text-align: center; padding: 2.5rem 1rem; }
+    .technique-category { font-size: 13px; color: var(--dojo-red); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+    .technique-name { font-family: 'Bebas Neue', sans-serif; font-size: clamp(24px, 5.5vw, 34px); letter-spacing: 1px; line-height: 1.05; }
+    .technique-romaji { font-size: clamp(14px, 3.5vw, 16px); color: var(--text-secondary); font-style: italic; }
+
+    .renraku-step { margin-bottom: 1.2rem; }
+    .step-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--dojo-red); margin-bottom: 6px; }
+    .step-dachi { font-family: 'Bebas Neue', sans-serif; font-size: clamp(15px, 4vw, 18px); color: var(--text-secondary); }
+    .step-techniques { font-family: 'Bebas Neue', sans-serif; font-size: clamp(19px, 5vw, 27px); letter-spacing: 1.1px; line-height: 1.15; color: var(--text-primary); }
+    .step-divider { height: 1px; background: var(--border-tertiary); margin: 14px 0; }
+    .renraku-counter { font-size: 13px; color: var(--text-secondary); text-align: right; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-tertiary); }
+
+    .progress-bar-wrap { height: 4px; background: var(--border-tertiary); border-radius: 999px; margin-bottom: 1.25rem; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: var(--dojo-red); width: 0%; transition: width 0.4s linear; }
+
+    .panel-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; }
+    .panel-label { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-secondary); }
+    .panel-chevron { width: 18px; height: 18px; transition: transform 0.25s; color: var(--text-secondary); }
+    .panel-chevron.collapsed { transform: rotate(-90deg); }
+
+    .panel-body { 
+      overflow: hidden; 
+      transition: all 0.3s ease; 
+      margin-top: 10px;          /* Added vertical spacing */
+    }
+    .panel-body.collapsed { 
+      max-height: 0; 
+      opacity: 0; 
+      margin-top: 0; 
     }
 
-    .progress-bar-fill {
-      height: 100%;
-      background: var(--dojo-red);
-      width: 0%;
+    .checkbox-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    #kyuRow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .cb-item { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .cb-box { width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid var(--border-secondary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cb-box.checked { background: var(--dojo-red); border-color: var(--dojo-red); }
+    .cb-box.checked::after { content: ''; width: 5px; height: 9px; border: 2px solid #fff; border-top: none; border-left: none; transform: rotate(45deg) translate(-1px, -1px); }
+
+    .controls-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .controls-grid.single { grid-template-columns: 1fr; }
+
+    .btn-row { display: flex; gap: 12px; align-items: center; margin-top: 1rem; }
+    .start-btn {
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(21px, 5vw, 25px); letter-spacing: 2px;
+      padding: 14px 28px; border-radius: var(--radius-md); border: none; background: var(--dojo-red);
+      color: #fff; cursor: pointer; min-height: 56px; flex: 1;
     }
-
-    .warn {
-      font-size: 13px;
-      color: #ffb3b3;
-      margin-top: 8px;
-      display: none;
-    }
-
-    input[type="range"] {
-      width: 100%;
-      touch-action: pan-y;
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    @media (max-width: 640px) {
-      .dojo-wrap {
-        padding: 0.9rem;
-      }
-
-      .technique-display {
-        min-height: 140px;
-        padding: 1rem 0.9rem;
-      }
-
-      .controls-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .btn-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .counter-block {
-        margin-left: 0;
-        text-align: left;
-      }
-
-      .checkbox-row {
-        gap: 10px;
-      }
-
-      #kyuRow {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .cb-item {
-        width: 100%;
-      }
-
-      .cb-text {
-        font-size: 13px;
-      }
-
-      .start-btn {
-        width: 100%;
-      }
-    }
+    .start-btn.running { background: #555; }
   </style>
 </head>
 <body>
-  <div class="dojo-wrap">
-    <h2 class="sr-only">Kyokushin Karate Technique Trainer</h2>
+<div class="dojo-wrap">
 
-    <div class="technique-display">
-      <div class="technique-idle" id="idleMsg">Press OSS to begin training</div>
-      <div id="techContent" style="display:none">
-        <div class="technique-category" id="techCat"></div>
-        <div class="technique-name" id="techName"></div>
-        <div class="technique-romaji" id="techRomaji"></div>
-        <div class="rep-badge" id="repBadge"></div>
+  <div class="mode-tabs">
+    <button class="mode-tab active" id="tabSimple">Simple Mode</button>
+    <button class="mode-tab" id="tabRenraku">Renraku Mode</button>
+  </div>
+
+  <!-- Simple -->
+  <div id="simpleDisplay" class="card technique-display">
+    <div class="technique-idle" id="idleMsg">Press OSS to begin training</div>
+    <div id="techContent" style="display:none">
+      <div class="technique-category" id="techCat"></div>
+      <div class="technique-name" id="techName"></div>
+      <div class="technique-romaji" id="techRomaji"></div>
+    </div>
+  </div>
+
+  <!-- Renraku -->
+  <div id="renrakuDisplay" class="card renraku-display" style="display:none">
+    <div class="renraku-idle" id="renrakuIdle">Press OSS — GENERATE RENRAKU to start</div>
+    <div id="renrakuContent" style="display:none"></div>
+  </div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressBar"></div>
+  </div>
+
+  <!-- Technique Groups -->
+  <div class="panel">
+    <div class="panel-header" id="groupHeader">
+      <div class="panel-label">Technique Groups</div>
+      <svg class="panel-chevron" id="groupChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="panel-body" id="groupBody">
+      <div class="checkbox-row" id="groupRow"></div>
+    </div>
+  </div>
+
+  <!-- Kyu / Dan -->
+  <div class="panel">
+    <div class="panel-header" id="kyuHeader">
+      <div class="panel-label">Kyu / Dan Levels</div>
+      <svg class="panel-chevron" id="kyuChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="panel-body" id="kyuBody">
+      <div id="kyuRow"></div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls-grid" id="controlsGrid">
+    <div class="panel control-panel" id="intervalPanel">
+      <div class="panel-header" id="intervalHeader">
+        <div class="panel-label">Interval</div>
+        <svg class="panel-chevron" id="intervalChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
       </div>
-    </div>
-
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-fill" id="progressBar"></div>
-    </div>
-
-    <div class="filter-section">
-      <div class="filter-label">Technique groups</div>
-      <div class="checkbox-row" id="groupRow">
-        <label class="cb-item"><div class="cb-box checked" data-group="strikes"></div><span class="cb-text">Tsuki &amp; Uchi</span></label>
-        <label class="cb-item"><div class="cb-box checked" data-group="keri"></div><span class="cb-text">Keri</span></label>
-        <label class="cb-item"><div class="cb-box checked" data-group="uke"></div><span class="cb-text">Uke</span></label>
-      </div>
-    </div>
-
-    <div class="filter-section">
-      <div class="filter-label">Kyu / Dan Levels</div>
-      <div class="checkbox-row" id="kyuRow"></div>
-      <div class="warn" id="warnMsg">⚠ Select at least one group and one level</div>
-    </div>
-
-    <div class="controls-grid">
-      <div class="control-block">
-        <div class="control-label">Interval</div>
+      <div class="panel-body" id="intervalBody">
         <div class="control-val" id="intervalVal">5s</div>
         <input type="range" id="intervalSlider" min="2" max="15" step="1" value="5">
       </div>
-      <div class="control-block">
-        <div class="control-label">Speech rate</div>
+    </div>
+
+    <div class="panel" id="ratePanel">
+      <div class="panel-header" id="rateHeader">
+        <div class="panel-label">Speech Rate</div>
+        <svg class="panel-chevron" id="rateChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="panel-body" id="rateBody">
         <div class="control-val" id="rateVal">0.9×</div>
         <input type="range" id="rateSlider" min="0.5" max="2" step="0.1" value="0.9">
       </div>
     </div>
-
-    <div class="btn-row">
-      <button class="start-btn" id="startBtn">OSS — START</button>
-      <div class="counter-block">
-        <div class="counter-val" id="counterVal">0</div>
-        <div class="counter-lbl">Techniques</div>
-      </div>
-    </div>
   </div>
 
-  <script>
-const techniques = [
-  // 10kyu
+  <div class="btn-row">
+    <button class="start-btn" id="startBtn">OSS — START</button>
+    <div class="counter-block">
+      <div class="counter-val" id="counterVal">0</div>
+      <div class="counter-lbl" id="counterLbl">Techniques</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==================== FULL TECHNIQUES ARRAY HERE ==================== */
+const techniques = [ /* Paste your complete techniques array */   // 10kyu
   { name: "Seiken Kagi Tsuki", group: "strikes", kyu: "10kyu" },
   { name: "Seiken Oi Tsuki Jodan", group: "strikes", kyu: "10kyu", speak: "Seiken Oi Tsuki Yodan" },
   { name: "Seiken Oi Tsuki Chudan", group: "strikes", kyu: "10kyu" },
@@ -554,218 +349,335 @@ const techniques = [
   { name: "Ushiro Mawashi Geri Jodan", group: "keri", kyu: "1dan", speak: "Ushiro Mawashi Geri Yodan" },
   { name: "Ushiro Mawashi Geri Chudan", group: "keri", kyu: "1dan", speak: "Ushiro Mawashi Geri Chudan" },
   { name: "Ushiro Mawashi Geri Gedan", group: "keri", kyu: "1dan", speak: "Ushiro Mawashi Geri Guedán" },
+ ];
+
+/* ==================== DATA ==================== */
+const dachi = [
+  { name: "Zenkutsu Dachi", speak: "Tsenkutsu Dachi" },
+  { name: "Kokutsu Dachi", speak: "Kokutsu Dachi" },
+  { name: "Kiba Dachi", speak: "Kiba Dachi" },
+  { name: "Moroashi Dachi", speak: "Moroashi Dachi" }
 ];
-    const activeGroups = new Set(["strikes", "keri", "uke"]);
-    const activeKyus = new Set(["10kyu","9kyu","8kyu","7kyu","6kyu","5kyu","4kyu","3kyu","2kyu","1kyu","1dan"]);
 
-    const STORAGE_KEY = 'kyokushin_config';
-    let _savedConfig = null;
-    try { _savedConfig = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); } catch(e) {}
-    if (_savedConfig) {
-      if (Array.isArray(_savedConfig.groups)) { activeGroups.clear(); _savedConfig.groups.forEach(g => activeGroups.add(g)); }
-      if (Array.isArray(_savedConfig.kyus)) { activeKyus.clear(); _savedConfig.kyus.forEach(k => activeKyus.add(k)); }
-    }
+const stepLabels = [
+  { text: "Primer paso", speak: "Primer paso" },
+  { text: "Segundo paso", speak: "Segundo paso" },
+  { text: "Tercer paso", speak: "Tercer paso" }
+];
 
-    function saveConfig() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          groups: [...activeGroups],
-          kyus: [...activeKyus],
-          interval: intervalSlider.value,
-          rate: rateSlider.value,
-        }));
-      } catch(e) {}
-    }
+/* ==================== STATE ==================== */
+let currentMode = 'simple';
+let running = false;
+let simpleCount = 0;
+let renrakuCount = 0;
+let hasGenerated = false;
 
-    let running = false;
-    let count = 0;
-    let lastIdx = -1;
-    let timeoutId = null;
-    let progressAnimFrame = null;
+const STORAGE_KEY = 'kyokushin_trainer_final';
 
-    const idleMsg = document.getElementById('idleMsg');
-    const techContent = document.getElementById('techContent');
-    const techCat = document.getElementById('techCat');
-    const techName = document.getElementById('techName');
-    const techRomaji = document.getElementById('techRomaji');
-    const repBadge = document.getElementById('repBadge');
-    const startBtn = document.getElementById('startBtn');
-    const counterVal = document.getElementById('counterVal');
-    const intervalSlider = document.getElementById('intervalSlider');
-    const intervalVal = document.getElementById('intervalVal');
-    const rateSlider = document.getElementById('rateSlider');
-    const rateVal = document.getElementById('rateVal');
-    const progressBar = document.getElementById('progressBar');
-    const warnMsg = document.getElementById('warnMsg');
+let config = {
+  mode: 'simple',
+  groups: ["strikes","keri","uke"],
+  kyus: ["10kyu","9kyu","8kyu","7kyu","6kyu","5kyu","4kyu","3kyu","2kyu","1kyu","1dan"],
+  interval: 5,
+  rate: 0.9,
+  groupExpanded: true,
+  kyuExpanded: true,
+  intervalExpanded: true,
+  rateExpanded: true
+};
 
-    const kyuLabels = {
-      "10kyu":"10 Kyu","9kyu":"9 Kyu","8kyu":"8 Kyu","7kyu":"7 Kyu","6kyu":"6 Kyu",
-      "5kyu":"5 Kyu","4kyu":"4 Kyu","3kyu":"3 Kyu","2kyu":"2 Kyu","1kyu":"1 Kyu","1dan":"1 Dan"
-    };
+if (localStorage.getItem(STORAGE_KEY)) {
+  config = {...config, ...JSON.parse(localStorage.getItem(STORAGE_KEY))};
+}
+currentMode = config.mode;
 
-    const kyuRow = document.getElementById('kyuRow');
-    Object.keys(kyuLabels).forEach(kyu => {
-      const label = document.createElement('label');
-      label.className = 'cb-item';
-      const isChecked = activeKyus.has(kyu);
-      label.innerHTML = `<div class="cb-box${isChecked ? ' checked' : ''}" data-kyu="${kyu}"></div><span class="cb-text">${kyuLabels[kyu]}</span>`;
-      kyuRow.appendChild(label);
-    });
+const activeGroups = new Set(config.groups);
+const activeKyus = new Set(config.kyus);
 
-    function toggleFilter(set, box, type) {
-      const value = box.dataset[type];
-      if (set.has(value)) {
-        if (set.size === 1) {
-          warnMsg.style.display = 'block';
-          return;
-        }
-        set.delete(value);
-        box.classList.remove('checked');
-      } else {
-        set.add(value);
-        box.classList.add('checked');
-      }
-      warnMsg.style.display = 'none';
-      lastIdx = -1;
-      if (running) restartCycle();
+/* DOM */
+const tabSimple = document.getElementById('tabSimple');
+const tabRenraku = document.getElementById('tabRenraku');
+const simpleDisplay = document.getElementById('simpleDisplay');
+const renrakuDisplay = document.getElementById('renrakuDisplay');
+const idleMsg = document.getElementById('idleMsg');
+const techContent = document.getElementById('techContent');
+const techCat = document.getElementById('techCat');
+const techName = document.getElementById('techName');
+const techRomaji = document.getElementById('techRomaji');
+const renrakuIdle = document.getElementById('renrakuIdle');
+const renrakuContent = document.getElementById('renrakuContent');
+const startBtn = document.getElementById('startBtn');
+const counterVal = document.getElementById('counterVal');
+const counterLbl = document.getElementById('counterLbl');
+const intervalPanel = document.getElementById('intervalPanel');
+const controlsGrid = document.getElementById('controlsGrid');
+const intervalSlider = document.getElementById('intervalSlider');
+const intervalVal = document.getElementById('intervalVal');
+const rateSlider = document.getElementById('rateSlider');
+const rateVal = document.getElementById('rateVal');
+const progressBar = document.getElementById('progressBar');
+
+/* Collapsible */
+function setupCollapsible(headerId, bodyId, chevronId, key) {
+  const header = document.getElementById(headerId);
+  const body = document.getElementById(bodyId);
+  const chevron = document.getElementById(chevronId);
+
+  if (!config[key]) {
+    body.classList.add('collapsed');
+    chevron.classList.add('collapsed');
+  }
+
+  header.addEventListener('click', () => {
+    body.classList.toggle('collapsed');
+    chevron.classList.toggle('collapsed');
+    config[key] = !body.classList.contains('collapsed');
+    saveConfig();
+  });
+}
+
+setupCollapsible('groupHeader','groupBody','groupChevron','groupExpanded');
+setupCollapsible('kyuHeader','kyuBody','kyuChevron','kyuExpanded');
+setupCollapsible('intervalHeader','intervalBody','intervalChevron','intervalExpanded');
+setupCollapsible('rateHeader','rateBody','rateChevron','rateExpanded');
+
+/* Save */
+function saveConfig() {
+  config.groups = [...activeGroups];
+  config.kyus = [...activeKyus];
+  config.mode = currentMode;
+  config.interval = parseInt(intervalSlider.value);
+  config.rate = parseFloat(rateSlider.value);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+}
+
+/* Mode UI */
+function applyModeUI() {
+  const isSimple = currentMode === 'simple';
+  tabSimple.classList.toggle('active', isSimple);
+  tabRenraku.classList.toggle('active', !isSimple);
+
+  simpleDisplay.style.display = isSimple ? 'block' : 'none';
+  renrakuDisplay.style.display = isSimple ? 'none' : 'block';
+
+  intervalPanel.style.display = isSimple ? 'block' : 'none';
+  controlsGrid.classList.toggle('single', !isSimple);
+
+  counterLbl.textContent = isSimple ? 'Techniques' : 'Renraku';
+  startBtn.textContent = isSimple ? 'OSS — START' : 'OSS — GENERATE RENRAKU';
+  hasGenerated = false;
+  saveConfig();
+}
+
+tabSimple.addEventListener('click', () => { currentMode = 'simple'; applyModeUI(); stopAll(); });
+tabRenraku.addEventListener('click', () => { currentMode = 'renraku'; applyModeUI(); stopAll(); });
+
+/* Sliders */
+intervalSlider.value = config.interval;
+intervalVal.textContent = config.interval + 's';
+intervalSlider.addEventListener('input', () => {
+  intervalVal.textContent = intervalSlider.value + 's';
+  saveConfig();
+});
+
+rateSlider.value = config.rate;
+rateVal.textContent = parseFloat(config.rate).toFixed(1) + '×';
+rateSlider.addEventListener('input', () => {
+  rateVal.textContent = parseFloat(rateSlider.value).toFixed(1) + '×';
+  saveConfig();
+});
+
+/* Checkboxes */
+function createCheckboxes() {
+  document.getElementById('groupRow').innerHTML = `
+    <label class="cb-item"><div class="cb-box ${activeGroups.has('strikes')?'checked':''}" data-type="group" data-value="strikes"></div><span class="cb-text">Tsuki & Uchi</span></label>
+    <label class="cb-item"><div class="cb-box ${activeGroups.has('keri')?'checked':''}" data-type="group" data-value="keri"></div><span class="cb-text">Keri</span></label>
+    <label class="cb-item"><div class="cb-box ${activeGroups.has('uke')?'checked':''}" data-type="group" data-value="uke"></div><span class="cb-text">Uke</span></label>
+  `;
+
+  const kyuRow = document.getElementById('kyuRow');
+  kyuRow.innerHTML = '';
+  const kyuList = {"10kyu":"10 Kyu","9kyu":"9 Kyu","8kyu":"8 Kyu","7kyu":"7 Kyu","6kyu":"6 Kyu","5kyu":"5 Kyu","4kyu":"4 Kyu","3kyu":"3 Kyu","2kyu":"2 Kyu","1kyu":"1 Kyu","1dan":"1 Dan"};
+  Object.keys(kyuList).forEach(k => {
+    const checked = activeKyus.has(k) ? 'checked' : '';
+    const label = document.createElement('label');
+    label.className = 'cb-item';
+    label.innerHTML = `<div class="cb-box ${checked}" data-type="kyu" data-value="${k}"></div><span class="cb-text">${kyuList[k]}</span>`;
+    kyuRow.appendChild(label);
+  });
+
+  document.querySelectorAll('.cb-box').forEach(box => {
+    box.addEventListener('click', () => {
+      box.classList.toggle('checked');
+      const type = box.dataset.type;
+      const val = box.dataset.value;
+      if (type === 'group') box.classList.contains('checked') ? activeGroups.add(val) : activeGroups.delete(val);
+      else box.classList.contains('checked') ? activeKyus.add(val) : activeKyus.delete(val);
       saveConfig();
-    }
-
-    document.getElementById('groupRow').addEventListener('click', e => {
-      const box = e.target.closest('[data-group]');
-      if (box) toggleFilter(activeGroups, box, 'group');
     });
+  });
+}
 
-    kyuRow.addEventListener('click', e => {
-      const box = e.target.closest('[data-kyu]');
-      if (box) toggleFilter(activeKyus, box, 'kyu');
-    });
+/* Speech */
+function speak(text) {
+  if (!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'es-ES';
+  u.rate = parseFloat(rateSlider.value);
+  window.speechSynthesis.speak(u);
+}
 
-    intervalSlider.addEventListener('input', () => {
-      intervalVal.textContent = intervalSlider.value + 's';
-      if (running) restartCycle();
-      saveConfig();
-    });
+function getPool() {
+  return techniques.filter(t => activeGroups.has(t.group) && activeKyus.has(t.kyu));
+}
 
-    rateSlider.addEventListener('input', () => {
-      rateVal.textContent = parseFloat(rateSlider.value).toFixed(1) + '×';
-      saveConfig();
-    });
+/* Simple Mode */
+function pickAndShowSimple() {
+  const pool = getPool();
+  if (!pool.length) return;
+  const t = pool[Math.floor(Math.random() * pool.length)];
+  simpleCount++;
+  counterVal.textContent = simpleCount;
+  idleMsg.style.display = 'none';
+  techContent.style.display = 'block';
+  techCat.textContent = t.group === 'strikes' ? 'Tsuki / Uchi' : t.group === 'keri' ? 'Keri' : 'Uke';
+  techName.textContent = t.name;
+  speak(t.speak || t.name);
+}
 
-    function speak(text) {
-      if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
+function scheduleNextSimple() {
+  const delay = parseInt(intervalSlider.value) * 1000;
+  progressBar.style.width = '0%';
+  setTimeout(() => progressBar.style.width = '100%', 50);
+  timeoutId = setTimeout(() => {
+    if (running) {
+      pickAndShowSimple();
+      scheduleNextSimple();
+    }
+  }, delay);
+}
 
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'es-ES';
-      utterance.rate = parseFloat(rateSlider.value);
-      utterance.pitch = 1;
+function startSimple() {
+  running = true;
+  startBtn.textContent = 'OSS — STOP';
+  startBtn.classList.add('running');
+  simpleCount = 0;
+  counterVal.textContent = '0';
+  pickAndShowSimple();
+  scheduleNextSimple();
+}
 
-      const voices = window.speechSynthesis.getVoices();
-      const spanishVoice = voices.find(v => v.lang && v.lang.startsWith('es'));
-      if (spanishVoice) utterance.voice = spanishVoice;
+function stopSimple() {
+  running = false;
+  clearTimeout(timeoutId);
+  progressBar.style.width = '0%';
+  window.speechSynthesis.cancel();
+  startBtn.textContent = 'OSS — START';
+  startBtn.classList.remove('running');
+}
 
-      window.speechSynthesis.speak(utterance);
+/* Renraku */
+function generateRenraku() {
+  const pool = getPool();
+  if (!pool.length) return null;
+  const steps = [];
+  for (let s = 0; s < 3; s++) {
+    const d = dachi[Math.floor(Math.random() * dachi.length)];
+    const count = Math.random() < 0.5 ? 2 : 3;
+    const techs = [];
+    for (let i = 0; i < count; i++) techs.push(pool[Math.floor(Math.random() * pool.length)]);
+    steps.push({ dachi: d, techs });
+  }
+  return steps;
+}
+
+function renderRenraku(steps) {
+  renrakuContent.innerHTML = '';
+  steps.forEach((step, i) => {
+    const div = document.createElement('div');
+    div.className = 'renraku-step';
+    div.innerHTML = `
+      <div class="step-label">${stepLabels[i].text}</div>
+      <div class="step-dachi">${step.dachi.name}</div>
+      <div class="step-techniques">${step.techs.map(t => t.name).join(' + ')}</div>
+    `;
+    renrakuContent.appendChild(div);
+    if (i < 2) {
+      const hr = document.createElement('div');
+      hr.className = 'step-divider';
+      renrakuContent.appendChild(hr);
+    }
+  });
+  const ctr = document.createElement('div');
+  ctr.className = 'renraku-counter';
+  ctr.textContent = `Renraku #${renrakuCount}`;
+  renrakuContent.appendChild(ctr);
+}
+
+function speakRenraku(steps) {
+  window.speechSynthesis.cancel();
+  let i = 0;
+  const phrases = [];
+  steps.forEach((step, idx) => {
+    phrases.push(stepLabels[idx].speak);
+    phrases.push(step.dachi.speak);
+    step.techs.forEach(t => phrases.push(t.speak || t.name));
+  });
+  function next() {
+    if (i >= phrases.length) return;
+    speak(phrases[i]);
+    i++;
+    setTimeout(next, 700);
+  }
+  next();
+}
+
+/* Button */
+startBtn.addEventListener('click', () => {
+  if (currentMode === 'simple') {
+    if (running) stopSimple();
+    else startSimple();
+  } else {
+    renrakuCount++;
+    counterVal.textContent = renrakuCount;
+    renrakuIdle.style.display = 'none';
+    renrakuContent.style.display = 'block';
+
+    const steps = generateRenraku();
+    if (steps) {
+      renderRenraku(steps);
+      speakRenraku(steps);
     }
 
-    function getPool() {
-      return techniques.filter(t => activeGroups.has(t.group) && activeKyus.has(t.kyu));
+    if (!hasGenerated) {
+      startBtn.textContent = 'OSS — NEXT RENRAKU';
+      hasGenerated = true;
     }
+  }
+});
 
-    function groupLabel(g) {
-      return g === 'strikes' ? 'Tsuki / Uchi' : g === 'keri' ? 'Keri' : 'Uke';
-    }
+function stopAll() {
+  if (running) stopSimple();
+}
 
-    function animateProgress(duration) {
-      if (progressAnimFrame) cancelAnimationFrame(progressAnimFrame);
-      const start = performance.now();
-      progressBar.style.width = '0%';
-
-      function step(now) {
-        if (!running) return;
-        const pct = Math.min(((now - start) / duration) * 100, 100);
-        progressBar.style.width = pct + '%';
-        if (pct < 100) progressAnimFrame = requestAnimationFrame(step);
-      }
-
-      progressAnimFrame = requestAnimationFrame(step);
-    }
-
-    function scheduleNext() {
-      const delay = parseInt(intervalSlider.value, 10) * 1000;
-      animateProgress(delay);
-      timeoutId = setTimeout(() => {
-        if (!running) return;
-        pickAndShow();
-        scheduleNext();
-      }, delay);
-    }
-
-    function restartCycle() {
-      clearTimeout(timeoutId);
-      if (progressAnimFrame) cancelAnimationFrame(progressAnimFrame);
-      progressBar.style.width = '0%';
-      pickAndShow();
-      scheduleNext();
-    }
-
-    function pickAndShow() {
-      const pool = getPool();
-      if (!pool.length) {
-        idleMsg.textContent = "No techniques match your selection";
-        idleMsg.style.display = 'block';
-        techContent.style.display = 'none';
-        return;
-      }
-
-      let idx;
-      do {
-        idx = Math.floor(Math.random() * pool.length);
-      } while (idx === lastIdx && pool.length > 1);
-
-      lastIdx = idx;
-      const t = pool[idx];
-      count++;
-      counterVal.textContent = count;
-
-      idleMsg.style.display = 'none';
-      techContent.style.display = 'block';
-      techCat.textContent = groupLabel(t.group);
-      techName.textContent = t.name;
-      techRomaji.textContent = t.romaji || '';
-      repBadge.textContent = '#' + count;
-
-      speak(t.speak || t.name);
-    }
-
-    startBtn.addEventListener('click', () => {
-      if (!running) {
-        running = true;
-        startBtn.textContent = 'OSS — STOP';
-        startBtn.classList.add('running');
-        pickAndShow();
-        scheduleNext();
-      } else {
-        running = false;
-        clearTimeout(timeoutId);
-        if (progressAnimFrame) cancelAnimationFrame(progressAnimFrame);
-        progressBar.style.width = '0%';
-        window.speechSynthesis?.cancel();
-        startBtn.textContent = 'OSS — START';
-        startBtn.classList.remove('running');
-      }
-    });
-
-    window.speechSynthesis?.getVoices();
-    if (_savedConfig) {
-      if (_savedConfig.interval) { intervalSlider.value = _savedConfig.interval; intervalVal.textContent = _savedConfig.interval + 's'; }
-      if (_savedConfig.rate) { rateSlider.value = _savedConfig.rate; }
-    }
-    document.querySelectorAll('[data-group]').forEach(box => {
-      box.classList.toggle('checked', activeGroups.has(box.dataset.group));
-    });
-    rateVal.textContent = parseFloat(rateSlider.value).toFixed(1) + '×';
-    intervalVal.textContent = intervalSlider.value + 's';
-  </script>
+/* Init */
+createCheckboxes();
+applyModeUI();
+</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
